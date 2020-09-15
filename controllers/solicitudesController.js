@@ -49,6 +49,7 @@ exports.obtenerSolicitudes = async (req, res) => {
 
 //Actualiza una solicitud
 exports.actualizarSolicitud = async (req, res) => {
+  try { 
   const { nombre_solicitante, estado } = req.body;
 
   // Si la solicitud existe o no
