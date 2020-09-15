@@ -49,27 +49,25 @@ exports.obtenerSolicitudes = async (req, res) => {
 
 //Actualiza una solicitud
 exports.actualizarSolicitud = async (req, res) => {
-  try {
-    // Extraer el usuario y comprobar si existe
-    const { nombre_solicitante, estado } = req.body;
+  const { nombre_solicitante, estado } = req.body;
 
-    // Si la solicitud existe o no
-    let solicitud = await Solicitud.findById(req.params.id);
+  // Si la solicitud existe o no
+  let solicitud = await Solicitud.findById(req.params.id);
 
-    if (!solicitud) {
-      return res.status(404).json({ msg: "No existe esa solicitud" });
-    }
-
-    // Crear un objeto con la nueva información
-    const nuevaSolicitud = {};
-    if(nombre_solicitante){
-      nuevaSolicitud.nombre_solicitante = nombre_solicitante;
-    }
-    if(estado){
-      nuevaSolicitud.estado = false;
-    }else{
-      nuevaSolicitud.estado = true;
-    }
+  if (!solicitud) {
+    return res.status(404).json({ msg: "No existe esa solicitud" });
+  }
+  
+  // Crear un objeto con la nueva información
+  const nuevaSolicitud = {};
+  if(nombre_solicitante){
+    nuevaSolicitud.nombre_solicitante = nombre_solicitante;
+  }
+  if(solicitud.estado === true){
+    nuevaSolicitud.estado = false;
+  }else{
+    nuevaSolicitud.estado = true;
+  }
 
     // Guardar la solicitud
     solicitud = await Solicitud.findOneAndUpdate(
