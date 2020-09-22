@@ -25,9 +25,9 @@ const SolicitudesSchema = mongoose.Schema({
         default: Date.now()
     },
     estado: {
-        type: Boolean,
+        type: String,
         required: true,
-        default: false
+        default: 'false'
     }
 })
 module.exports = mongoose.model('Solicitudes', SolicitudesSchema);

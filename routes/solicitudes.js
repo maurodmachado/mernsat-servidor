@@ -29,6 +29,12 @@ router.put(
   solicitudesController.actualizarSolicitud
 );
 
+router.put(
+  "/archivar/:id",
+  auth,
+  solicitudesController.archivarSolicitud
+);
+
 //Eliminar una solicitud
 //Actualizar solicitudes via ID
 router.delete(
@@ -37,4 +43,9 @@ router.delete(
     solicitudesController.eliminarSolicitud
   );
   
+  router.delete(
+    "/",
+    auth,
+    solicitudesController.eliminarSolicitudes
+  );
 module.exports = router;

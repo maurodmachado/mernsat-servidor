@@ -33,6 +33,8 @@ exports.crearSolicitud = async (req, res) => {
   }
 };
 
+
+
 //Obtiene todos las solicitudes del usuario actual
 exports.obtenerSolicitudes = async (req, res) => {
   try {
@@ -50,7 +52,7 @@ exports.obtenerSolicitudes = async (req, res) => {
 //Actualiza una solicitud
 exports.actualizarSolicitud = async (req, res) => {
   try { 
-  const { nombre_solicitante, estado } = req.body;
+  const { nombre_solicitante } = req.body;
 
   // Si la solicitud existe o no
   let solicitud = await Solicitud.findById(req.params.id);
@@ -64,11 +66,49 @@ exports.actualizarSolicitud = async (req, res) => {
   if(nombre_solicitante){
     nuevaSolicitud.nombre_solicitante = nombre_solicitante;
   }
-  if(solicitud.estado === true){
-    nuevaSolicitud.estado = false;
-  }else{
-    nuevaSolicitud.estado = true;
+  if(solicitud.estado === 'true'){
+    nuevaSolicitud.estado = 'false';
+  }else if(solicitud.estado === 'false'){
+    nuevaSolicitud.estado = 'true';
   }
+
+    // Guardar la solicitud
+    solicitud = await Solicitud.findOneAndUpdate(
+      { _id: req.params.id },
+      nuevaSolicitud,
+      { new: true }
+    );
+
+    res.json({ solicitud });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Hubo un error");
+  }
+};
+
+//Actualiza una solicitud
+exports.archivarSolicitud = async (req, res) => {
+  try { 
+  const { nombre_solicitante } = req.body;
+
+  // Si la solicitud existe o no
+  let solicitud = await Solicitud.findById(req.params.id);
+
+  if (!solicitud) {
+    return res.status(404).json({ msg: "No existe esa solicitud" });
+  }
+  
+  // Crear un objeto con la nueva información
+  const nuevaSolicitud = {};
+  if(nombre_solicitante){
+    nuevaSolicitud.nombre_solicitante = nombre_solicitante;
+  }
+    if(solicitud.estado !== 'archivada'){
+      nuevaSolicitud.estado = 'archivada';
+    }else{
+      nuevaSolicitud.estado = 'false'
+    }
+
 
     // Guardar la solicitud
     solicitud = await Solicitud.findOneAndUpdate(
@@ -90,7 +130,7 @@ exports.eliminarSolicitud = async (req, res) => {
   try {
     // Si la solicitud existe o no
     let solicitud = await Solicitud.findById(req.params.id);
-
+    
     if (!solicitud) {
       return res.status(404).json({ msg: "No existe esa solicitud" });
     }
@@ -98,6 +138,21 @@ exports.eliminarSolicitud = async (req, res) => {
     //Eliminar solicitud
     await Solicitud.findOneAndRemove({ _id: req.params.id });
     res.json({ msg: "Solicitud eliminada" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Hubo un error");
+  }
+};
+
+//Elimina todas las solicitudes archivadas
+exports.eliminarSolicitudes = async (req, res) => {
+  
+  try {
+    
+    //Eliminar solicitud
+
+    await Solicitud.deleteMany({ estado: 'archivada' });
+    res.json({ msg: "Solicitudes eliminadas" });
   } catch (error) {
     console.log(error);
     res.status(500).send("Hubo un error");
