@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken')
 
 
 exports.autenticarUsuario = async (req, res) => {
-    
+   
     //Revisar si hay errores
     const errores = validationResult(req);
     if(!errores.isEmpty()){
@@ -13,9 +13,9 @@ exports.autenticarUsuario = async (req, res) => {
     }
 
     //Extraer usuario y password
-    const {usuario, password} = req.body;
-
+    const {usuario, password} = req.body;console.log(usuario, password);
     try {
+        
         //Revisar que el usuario este registrado
         let user = await Usuario.findOne({usuario})
         
@@ -41,7 +41,7 @@ exports.autenticarUsuario = async (req, res) => {
             if (error) throw error;
 
             //Mensaje de confirmacion
-            res.json({ token});
+            res.status(200).send({token});
         });
 
     } catch (error) {
@@ -55,7 +55,7 @@ exports.autenticarUsuario = async (req, res) => {
 exports.usuarioAutenticado = async (req,res) => {
     try {
         const usuario = await Usuario.findById(req.user.id).select('-password');
-        res.json({usuario});
+        res.status(200).json({usuario});
     } catch (error) {
         console.log(error);
         res.status(500).json({msg: 'Hubo un error'})

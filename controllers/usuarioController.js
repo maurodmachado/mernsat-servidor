@@ -30,7 +30,7 @@ exports.crearUsuario = async (req, res) => {
     user.departamento = departamento;
 
     //Guardar nuevo usuario
-    await user.save();
+    const usuarioCreado = await user.save();
 
     //Crear y firmar JWT
     const payload = {
@@ -50,7 +50,7 @@ exports.crearUsuario = async (req, res) => {
         if (error) throw error;
 
         //Mensaje de confirmacion
-        res.json({ token });
+        res.status(200).json({ usuarioCreado, token });
       }
     );
   } catch (error) {
@@ -114,7 +114,7 @@ exports.eliminarUsuario = async (req, res) => {
 
     //Eliminar solicitud
     await Usuario.findOneAndRemove({ _id: req.params.id });
-    res.json({ msg: "Usuario eliminado" });
+    res.status(200).json({ msg: "Usuario eliminado" });
   } catch (error) {
     console.log(error);
     res.status(500).send("Hubo un error");
@@ -133,7 +133,7 @@ exports.obtenerUsuarios = async (req, res) => {
     }
 
     
-    res.json({usuarios});
+    res.status(200).json({usuarios});
   } catch (error) {
     console.log(error);
     res.status(500).send("Hubo un error");

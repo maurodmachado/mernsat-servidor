@@ -18,8 +18,8 @@ app.use(cors())
 const PORT = process.env.PORT || 4000;
 
 io.on('connection', socket => {
-  socket.on('message', ({ nombre_solicitante, departamento, descripcion, estado }) => {
-    io.emit('message', { nombre_solicitante, departamento, descripcion, estado })
+  socket.on('solicitud', ({ nombre_solicitante, departamento, descripcion, estado }) => {
+    io.emit('solicitud', { nombre_solicitante, departamento, descripcion, estado })
   })
 })
 

@@ -20,7 +20,7 @@ exports.crearSolicitud = async (req, res) => {
 
     // Revisar si la solicitud actual pertenece al usuario autenticado
     if (existeUsuario._id.toString() !== userId) {
-      return res.status(401).json({ msg: "No Autorizado" });
+      return res.status(401).json({ msg: "No autorizado" });
     }
 
     //Crear nueva solicitud
@@ -79,7 +79,7 @@ exports.actualizarSolicitud = async (req, res) => {
       { new: true }
     );
 
-    res.json({ solicitud });
+    res.status(200).json({ solicitud });
   } catch (error) {
     console.log(error);
     res.status(500).send("Hubo un error");
@@ -117,7 +117,7 @@ exports.archivarSolicitud = async (req, res) => {
       { new: true }
     );
 
-    res.json({ solicitud });
+    res.status(200).json({ solicitud });
   } catch (error) {
     console.log(error);
     res.status(500).send("Hubo un error");
@@ -137,7 +137,7 @@ exports.eliminarSolicitud = async (req, res) => {
 
     //Eliminar solicitud
     await Solicitud.findOneAndRemove({ _id: req.params.id });
-    res.json({ msg: "Solicitud eliminada" });
+    res.status(200).json({ msg: "Solicitud eliminada" });
   } catch (error) {
     console.log(error);
     res.status(500).send("Hubo un error");
@@ -152,7 +152,7 @@ exports.eliminarSolicitudes = async (req, res) => {
     //Eliminar solicitud
 
     await Solicitud.deleteMany({ estado: 'archivada' });
-    res.json({ msg: "Solicitudes eliminadas" });
+    res.status(200).json({ msg: "Solicitudes eliminadas" });
   } catch (error) {
     console.log(error);
     res.status(500).send("Hubo un error");
