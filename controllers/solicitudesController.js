@@ -25,8 +25,8 @@ exports.crearSolicitud = async (req, res) => {
 
     //Crear nueva solicitud
     const solicitud = new Solicitud(req.body);
-    await solicitud.save();
-    res.json({ solicitud });
+    const solicitudCreada = await solicitud.save();
+    res.status(200).json({ solicitudCreada });
   } catch (error) {
     console.log(error);
     res.status(500).send("Hubo un error");
@@ -136,8 +136,8 @@ exports.eliminarSolicitud = async (req, res) => {
     }
 
     //Eliminar solicitud
-    await Solicitud.findOneAndRemove({ _id: req.params.id });
-    res.status(200).json({ msg: "Solicitud eliminada" });
+    const solicitudEliminada = await Solicitud.findOneAndRemove({ _id: req.params.id });
+    res.status(200).json({ msg: "Solicitud eliminada", solicitudEliminada });
   } catch (error) {
     console.log(error);
     res.status(500).send("Hubo un error");
@@ -151,8 +151,8 @@ exports.eliminarSolicitudes = async (req, res) => {
     
     //Eliminar solicitud
 
-    await Solicitud.deleteMany({ estado: 'archivada' });
-    res.status(200).json({ msg: "Solicitudes eliminadas" });
+    solicitudesEliminadas = await Solicitud.deleteMany({ estado: 'archivada' });
+    res.status(200).json({ msg: "Solicitudes eliminadas", solicitudesEliminadas });
   } catch (error) {
     console.log(error);
     res.status(500).send("Hubo un error");

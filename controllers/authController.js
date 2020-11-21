@@ -13,7 +13,7 @@ exports.autenticarUsuario = async (req, res) => {
     }
 
     //Extraer usuario y password
-    const {usuario, password} = req.body;console.log(usuario, password);
+    const {usuario, password} = req.body;
     try {
         
         //Revisar que el usuario este registrado
