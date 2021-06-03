@@ -1,12 +1,18 @@
-const express = require("express");
+const express = require('express');
 const path = require("path");
 const conectarDB = require("./config/db");
 const cors = require('cors');
 
+//Puerto del servidor
+const PORT = process.env.PORT || 4000;
+
 //Crear el servidor
-const app = require('express')()
-const http = require('http').createServer(app)
-const io = require('socket.io')(http)
+const app = express();
+const server = app.listen(PORT, function() {
+  console.log(`El servidor esta funcionando en el puerto ${PORT}`);
+  console.log(`http://localhost:${PORT}`);
+})
+const io = require('socket.io')(server)
 
 //Conectar a la BD
 conectarDB();
@@ -14,8 +20,6 @@ conectarDB();
 //Habilitar cors
 app.use(cors())
 
-//Puerto del servidor
-const PORT = process.env.PORT || 4000;
 
 io.on('connection', socket => {
   socket.on('solicitud', ({ nombre_solicitante, departamento, descripcion, estado }) => {
@@ -23,10 +27,7 @@ io.on('connection', socket => {
   })
 })
 
-http.listen(PORT, function() {
-  console.log(`El servidor esta funcionando en el puerto ${PORT}`);
-  console.log(`http://localhost:${PORT}`);
-})
+
 
 //Hailitar express.json
 app.use(express.json({ extended: true }));
