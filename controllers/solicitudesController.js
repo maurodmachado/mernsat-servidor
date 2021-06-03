@@ -42,7 +42,7 @@ exports.obtenerSolicitudes = async (req, res) => {
     if (!solicitudes) {
       return res.status(404).json({ msg: "No hay solicitudes cargadas" });
     }
-    res.json({ solicitudes });
+    res.status(200).json({ solicitudes });
   } catch (error) {
     console.log(error);
     res.status(500).send("Hubo un error");
