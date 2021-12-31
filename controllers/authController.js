@@ -11,7 +11,7 @@ exports.autenticarUsuario = async (req, res) => {
     if(!errores.isEmpty()){
         return res.status(400).json({errores : errores.array()})
     }
-
+    console.log('emntre');
     //Extraer usuario y password
     const {usuario, password} = req.body;
     try {
@@ -41,7 +41,7 @@ exports.autenticarUsuario = async (req, res) => {
             if (error) throw error;
 
             //Mensaje de confirmacion
-            res.status(200).send({token});
+            res.status(200).send({token, usuario});
         });
 
     } catch (error) {
